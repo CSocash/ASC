@@ -62,4 +62,17 @@ text = doc.text_content().replace('$','').replace('USD', '')
 print(text)
 
 
+pjmPrice = driver.find_element("xpath", "//div/h3[text()[contains(.,'PJM')]]/following-sibling::h5[text()[contains(., '$')]]")
+#print(ercotPrice.get_attribute("innerHTML"))
+
+pjmPriceText = pjmPrice.get_attribute("innerHTML")
+print(pjmPriceText)
+
+# the inner html has some characters we don't want (&nbsp;), so let's clean that up with a cleaner
+# before and after: $&nbsp;15,000.00&nbsp;USD   $ 15,000.00 USD
+doc = lxml.html.fromstring(pjmPriceText)
+cleaner = lxml.html.clean.Cleaner(style=True)
+doc = cleaner.clean_html(doc)
+text = doc.text_content().replace('$','').replace('USD', '')
+print(text)
 
